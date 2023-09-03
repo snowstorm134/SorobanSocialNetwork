@@ -46,24 +46,19 @@ TBD
    ```sh
    git clone https://github.com/snowstorm134/SorobanSocialNetwork.git
    ```
-  
-2. Install soroban-cli alias by running the following command:
- ```sh
-   cargo install_soroban
-   ```
 
-3. Rename the `env.example` file to `.env` and set the `VITE_THIRDWEB_CLIENT_ID` variable. This ID are used for upload content to IPFS. You can get it for free here: https://thirdweb.com/dashboard/infrastructure/storage
+2. Rename the `env.example` file to `.env` and set the `VITE_THIRDWEB_CLIENT_ID` variable. This ID are used for upload content to IPFS. You can get it for free here: https://thirdweb.com/dashboard/infrastructure/storage
    
-5. Run
+3. Run
   ```sh
    npm run setup
    ```
   It will do all actions (creating a new wallet, get test tokens, build and deploy the contract using this wallet, create bind for typescript and also will install all node js packages). For more details, please check the guide.
   
-6. Run
+4. Run
   ```sh
    npm run dev
    ```
  It will run the app frontend on port 3000 or other.
  
-7. Open the app and start use it.
+5. Open the app and start use it.
