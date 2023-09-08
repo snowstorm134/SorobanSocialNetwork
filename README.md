@@ -6,7 +6,7 @@
   <p align="center">Social Network on Soroban Stellar (Futurenet)</p>
     - Live app: https://soroban-social-network.netlify.app<br/>
     - Tutorial (article): https://dev.to/user1122/soroban-social-network-tutorial-38ai<br/>
-    - Tutorial (video): <a href="https://t.ly/Z9R9F">Link</a>
+    - Tutorial (video): <a href="https://www.youtube.com/watch?v=-RHDKI1Uk3g">Link</a>
 </div>
 
 
