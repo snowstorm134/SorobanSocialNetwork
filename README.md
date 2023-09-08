@@ -76,9 +76,11 @@ TBD
 
 4. Correction of errors in typescript binding files
 
-    The `npm run setup` command from the previous steps also executed a script that creates typescript binding files for the smart contract. The fact is that at the moment, there is a certain error due to which the default created file generates an error in the frontend.
+    The `npm run setup` command from the previous steps also executed a script that creates typescript binding files for the smart contract.
 
-    To fix this error you need to:
+    Soroban-tooling is still in development, and the team is working to improve generated bindings that may not fully integrate with some frontends at this time.
+
+    In this project we will fix this by following these steps:
     - Go to: `.soroban/social-network-contract/dist/esm/`;
     - Open `index.js` file;
     - Find all `export async function` and in each of them replace this part:
