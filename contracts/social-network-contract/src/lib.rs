@@ -86,6 +86,11 @@ pub enum DataKey {
 
 /*
     Returns information about a specific user.
+    
+    Parameters:
+    - address [type: Address] -> user wallet address
+    
+    Return type: UserInfo
 */
 fn get_user_info(e: &Env, address: &Address) -> UserInfo {
     e.storage()
@@ -101,6 +106,11 @@ fn get_user_info(e: &Env, address: &Address) -> UserInfo {
 
 /*
     Returns the number of followers of a specific user.
+
+    Parameters:
+    - address [type: Address] -> user wallet address
+    
+    Return type: u32
 */
 fn get_user_followers_count(e: &Env, address: &Address) -> u32 {
     e.storage()
@@ -111,7 +121,15 @@ fn get_user_followers_count(e: &Env, address: &Address) -> u32 {
 
 
 /*
-    Descr
+    Returns the follower address of a specific user.
+    
+    Parameters:
+    - address    [type: Address]   -> user wallet address
+    - nr         [type: u32]       -> follower index (index < total number of followers) 
+
+    "Inexistent Follower" error will be generated when an incorrect follower index is entered.
+    
+    Return type: Address
 */
 fn get_user_follower_by_nr(e: &Env, address: &Address, nr: &u32) -> Address {
     assert!(
@@ -126,7 +144,13 @@ fn get_user_follower_by_nr(e: &Env, address: &Address, nr: &u32) -> Address {
 
 
 /*
-    Returns the status of a user's subscription to another user (true or false)
+    Returns the status of a user's subscription to another user (true or false).
+
+    Parameters:
+    - address      [type: Address] -> user wallet address
+    - follower     [type: Address] -> follower wallet address
+    
+    Return type: bool
 */
 fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
     e.storage()
@@ -137,7 +161,9 @@ fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
 
 
 /*
-    Returns the total number of publications
+    Returns the total number of publications.
+    
+    Return type: u32
 */
 fn get_posts_count(e: &Env) -> u32 {
     let posts_count: u32 = e
@@ -151,6 +177,13 @@ fn get_posts_count(e: &Env) -> u32 {
 
 /*
     Returns information about a specific post.
+
+    Parameters:
+    - nr         [type: u32]       -> post index (index < total number of posts) 
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    
+    Return type: Post
 */
 fn get_post(e: &Env, nr: &u32) -> Post {
     assert!(
@@ -167,6 +200,11 @@ fn get_post(e: &Env, nr: &u32) -> Post {
 
 /*
     Returns the number of posts of a specific user.
+
+    Parameters:
+    - address  [type: Address]  -> user wallet address
+    
+    Return type: u32
 */
 fn get_user_post_count(e: &Env, address: &Address) -> u32 {
     e.storage()
@@ -177,7 +215,15 @@ fn get_user_post_count(e: &Env, address: &Address) -> u32 {
 
 
 /*
-    Descr
+    Returns the post info of a specific user.
+
+    Parameters:
+    - address  [type: Address]  -> user wallet address
+    - nr       [type: u32]      -> post index (index < total number of user posts) 
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    
+    Return type: Post
 */
 fn get_post_of_user_by_nr(e: &Env, address: &Address, nr: &u32) -> Post {
     assert!(
@@ -192,7 +238,14 @@ fn get_post_of_user_by_nr(e: &Env, address: &Address, nr: &u32) -> Post {
 
 
 /*
-    Returns the number of likes for a specific post
+    Returns the number of likes for a specific post.
+
+    Parameters:
+    - post_nr   [type: u32] -> post index (index < total number of posts) 
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    
+    Return type: u32
 */
 fn get_post_likes(e: &Env, post_nr: &u32) -> u32 {
     assert!(
@@ -207,7 +260,15 @@ fn get_post_likes(e: &Env, post_nr: &u32) -> u32 {
 
 
 /*
-    Descr
+    Returns the like status for a specific post from a specific user
+    
+    Parameters:
+    - post_nr   [type: u32]      -> post index (index < total number of posts) 
+    - address   [type: Address]  -> user wallet address
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    
+    Return type: bool
 */
 fn get_like_status(e: &Env, post_nr: &u32, address: Address) -> bool {
     assert!(
@@ -222,7 +283,14 @@ fn get_like_status(e: &Env, post_nr: &u32, address: Address) -> bool {
 
 
 /*
-    Returns the number of comments for a specific post
+    Returns the number of comments for a specific post.
+    
+    Parameters:
+    - post_nr   [type: u32]      -> post index (index < total number of posts) 
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    
+    Return type: u32
 */
 fn get_post_comments_count(e: &Env, post_nr: &u32) -> u32 {
     assert!(
@@ -238,6 +306,15 @@ fn get_post_comments_count(e: &Env, post_nr: &u32) -> u32 {
 
 /*
     Descr
+
+    Parameters:
+    - post_nr      [type: u32]   -> post index (index < total number of posts) 
+    - comment_nr   [type: u32]   -> comment index (index < total number of comments on the post) 
+
+    "Inexistent Post" error will be generated when an incorrect post index is entered.
+    "Inexistent Comment" error will be generated when an incorrect comment index is entered.
+    
+    Return type: Comment
 */
 fn get_post_comment_by_nr(e: &Env, post_nr: &u32, comment_nr: &u32) -> Comment {
     assert!(
@@ -259,7 +336,12 @@ fn get_post_comment_by_nr(e: &Env, post_nr: &u32, comment_nr: &u32) -> Comment {
 
 
 /*
-    Descr
+    Adds a new follower for a specific user.
+
+    Parameters:
+    - address               [type: Address]   -> user wallet address
+    - user_folowers_count   [type: u32]       -> total number of user followers
+    - follower              [type: Address]   -> follower wallet address
 */
 fn set_follower(e: &Env, address: &Address, user_folowers_count: &u32, follower: &Address) {
     e.storage().instance().set(
@@ -278,7 +360,11 @@ fn set_follower(e: &Env, address: &Address, user_folowers_count: &u32, follower:
 
 
 /*
-    Descr
+    Adds a new post.
+    
+    Parameters:
+    - post_id   [type: u32]    -> post index
+    - post      [type: Post]   -> post info
 */
 fn set_post(e: &Env, post_id: &u32, post: &Post) {
     e.storage()
@@ -288,7 +374,12 @@ fn set_post(e: &Env, post_id: &u32, post: &Post) {
 
 
 /*
-    Descr
+    Adds a new post for a specific user.
+
+    Parameters:
+    - address           [type: Address]   -> user wallet address
+    - user_post_count   [type: u32]       -> total number of user posts
+    - post              [type: Post]      -> post info
 */
 fn set_post_of_user(e: &Env, address: &Address, user_post_count: &u32, post: &Post) {
     e.storage()
@@ -302,7 +393,12 @@ fn set_post_of_user(e: &Env, address: &Address, user_post_count: &u32, post: &Po
 
 
 /*
-    Descr
+    Adds a new comment to a specific post.
+    
+    Parameters:
+    - post_nr      [type: u32]       -> post index
+    - comment_nr   [type: u32]       -> comment index
+    - comment      [type: Comment]   -> comment info
 */
 fn set_post_comment(e: &Env, post_nr: &u32, comment_nr: &u32, comment: &Comment) {
     e.storage().instance().set(
@@ -316,9 +412,9 @@ pub struct SocialNetworkContract;
 
 #[contractimpl]
 impl SocialNetworkContract {
-    
     /*
-        Descr
+        Initializes the contract only if it has not been initialized before.
+        Also bump the contract by approximately 30 days.
     */
     pub fn initialize(e: Env) {
         assert!(
@@ -329,6 +425,10 @@ impl SocialNetworkContract {
         e.storage().instance().bump(BUMP_AMOUNT);
     }
 
+    /*
+        Updates user information.
+        Returns the new user information.
+    */
     pub fn update_user_info(
         e: Env,
         address: Address,
@@ -336,6 +436,8 @@ impl SocialNetworkContract {
         bio: String,
         avatar_uri: String,
     ) -> UserInfo {
+        /* Checks whether the caller's address matches the address 
+        of the user whose information needs to be updated */
         address.require_auth();
 
         let user_info = UserInfo {
@@ -343,26 +445,36 @@ impl SocialNetworkContract {
             bio: bio.clone(),
             avatar_uri: avatar_uri.clone(),
         };
+        // Stores information in the contract storage
         e.storage()
             .instance()
             .set(&DataKey::Users(address.clone()), &user_info);
         user_info
     }
 
+    /*
+        Contract method for following a user.
+        Returns the user's number of followers.
+    */
     pub fn follow_user(e: Env, follower: Address, address: Address) -> u32 {
         follower.require_auth();
+        // Checks if the user is trying to follow himself
         assert!(follower != address, "You cannot follow yourself");
         let mut user_followers_count = Self::get_user_followers_count(e.clone(), address.clone());
+        // Increments the number of subscribers
         user_followers_count += 1u32;
         set_follower(&e, &address, &user_followers_count, &follower);
         user_followers_count
     }
 
-
+    /*
+        Contract method for adding a new post.
+    */
     pub fn add_post(e: Env, address: Address, text: String, content_uri: String) -> Post {
         address.require_auth();
 
         let mut posts_count = Self::get_posts_count(e.clone());
+        // Increments the total number of posts
         posts_count += 1u32;
         e.storage()
             .instance()
@@ -378,14 +490,19 @@ impl SocialNetworkContract {
 
         set_post(&e, &posts_count, &post);
         let mut user_posts_count = Self::get_user_post_count(e.clone(), address.clone());
+        // Increments the number of posts of a specific user
         user_posts_count += 1u32;
         set_post_of_user(&e, &address, &user_posts_count, &post);
         post
     }
 
-
+     /*
+        Contract method that allows the user to like or unlike a specific post.
+        Returns the number of likes for the post.
+    */
     pub fn set_or_remove_like(e: Env, address: Address, post_nr: u32) -> u32 {
         address.require_auth();
+        // Checks if a post exists at the specified index
         assert!(
             post_nr > 0u32 && post_nr <= get_posts_count(&e.clone()),
             "Inexistent post nr"
@@ -410,6 +527,9 @@ impl SocialNetworkContract {
         post_likes
     }
 
+    /*
+        Contract method for adding a new comment.
+    */
     pub fn add_comment(e: Env, address: Address, post_nr: u32, text: String) -> Comment {
         address.require_auth();
 
@@ -431,6 +551,12 @@ impl SocialNetworkContract {
         comment
     }
 
+    /*
+        Getter methods.
+
+        These methods are used to retrieve data from the contract storage. 
+        They have been described above.
+    */
     pub fn get_user_info(e: Env, address: Address) -> UserInfo {
         get_user_info(&e, &address)
     }
