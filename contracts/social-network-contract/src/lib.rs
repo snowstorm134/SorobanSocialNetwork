@@ -61,9 +61,9 @@ pub enum DataKey {
     Users(Address),
     // Stores the number of followers for each user
     UserFollowersCount(Address),
-    // Stores
+    // Stores the address of each follower of a specific user
     UserFollowerByNr(Address, u32),
-    // Stores
+    // Stores the subscription status of a specific user to another user
     UserIsFollowedBy(Address, Address),
     // Stores the count of all posts
     PostsCount,
@@ -71,15 +71,15 @@ pub enum DataKey {
     Posts(u32),
     // Stores the number of publications for each user
     PostsOfUserCount(Address),
-    // Stores
+    // Stores all posts of a specific user
     PostOfUserByNr(Address, u32),
     // Stores the number of likes for each post
     Likes(u32),
-    // Stores
+    // Stores the like status for a specific post from a specific user
     LikeStatus(u32, Address),
     // Stores the number of comments for each post
     PostCommentsCount(u32),
-    // Stores
+    // Stores all comments for a specific post
     PostCommentByNr(u32, u32),
 }
 
