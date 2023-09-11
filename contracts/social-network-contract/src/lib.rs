@@ -1,8 +1,15 @@
 #![no_std]
 use soroban_sdk::{contract, contractimpl, contracttype, Address, Env, String};
 
+/*
+    The value that will be used when initializing the contract.
+    This will bump the contract (extend the lifetime of all instance entries) by approximately 30 days
+*/
 pub(crate) const BUMP_AMOUNT: u32 = 518400;
 
+/*
+    Descr
+*/
 #[derive(Clone, Debug)]
 #[contracttype]
 pub struct UserInfo {
@@ -11,6 +18,9 @@ pub struct UserInfo {
     pub avatar_uri: String,
 }
 
+/*
+    Descr
+*/
 #[derive(Clone, Debug)]
 #[contracttype]
 pub struct Post {
@@ -21,6 +31,10 @@ pub struct Post {
     pub content_uri: String,
 }
 
+
+/*
+    Descr
+*/
 #[derive(Clone, Debug)]
 #[contracttype]
 pub struct Comment {
@@ -30,6 +44,10 @@ pub struct Comment {
     pub text: String,
 }
 
+
+/*
+    Descr
+*/
 #[derive(Clone)]
 #[contracttype]
 pub enum DataKey {
@@ -52,6 +70,10 @@ pub enum DataKey {
     PostCommentByNr(u32, u32),
 }
 
+
+/*
+    Descr
+*/
 fn get_user_info(e: &Env, address: &Address) -> UserInfo {
     e.storage()
         .instance()
@@ -63,6 +85,10 @@ fn get_user_info(e: &Env, address: &Address) -> UserInfo {
         })
 }
 
+
+/*
+    Descr
+*/
 fn get_user_followers_count(e: &Env, address: &Address) -> u32 {
     e.storage()
         .instance()
@@ -70,6 +96,10 @@ fn get_user_followers_count(e: &Env, address: &Address) -> u32 {
         .unwrap_or(0u32)
 }
 
+
+/*
+    Descr
+*/
 fn get_user_follower_by_nr(e: &Env, address: &Address, nr: &u32) -> Address {
     assert!(
         nr > &0u32 && nr <= &get_user_followers_count(&e.clone(), &address.clone()),
@@ -81,6 +111,10 @@ fn get_user_follower_by_nr(e: &Env, address: &Address, nr: &u32) -> Address {
         .expect("Inexistent Follower")
 }
 
+
+/*
+    Descr
+*/
 fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
     e.storage()
         .instance()
@@ -88,6 +122,10 @@ fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
         .unwrap_or(false)
 }
 
+
+/*
+    Descr
+*/
 fn get_posts_count(e: &Env) -> u32 {
     let posts_count: u32 = e
         .storage()
@@ -97,6 +135,10 @@ fn get_posts_count(e: &Env) -> u32 {
     posts_count
 }
 
+
+/*
+    Descr
+*/
 fn get_post(e: &Env, nr: &u32) -> Post {
     assert!(
         nr > &0u32 && nr <= &get_posts_count(&e.clone()),
@@ -109,6 +151,10 @@ fn get_post(e: &Env, nr: &u32) -> Post {
         .expect("Inexistent Post")
 }
 
+
+/*
+    Descr
+*/
 fn get_user_post_count(e: &Env, address: &Address) -> u32 {
     e.storage()
         .instance()
@@ -116,6 +162,10 @@ fn get_user_post_count(e: &Env, address: &Address) -> u32 {
         .unwrap_or(0u32)
 }
 
+
+/*
+    Descr
+*/
 fn get_post_of_user_by_nr(e: &Env, address: &Address, nr: &u32) -> Post {
     assert!(
         nr > &0u32 && nr <= &get_user_post_count(&e.clone(), &address.clone()),
@@ -127,6 +177,10 @@ fn get_post_of_user_by_nr(e: &Env, address: &Address, nr: &u32) -> Post {
         .expect("Inexistent Post")
 }
 
+
+/*
+    Descr
+*/
 fn get_post_likes(e: &Env, post_nr: &u32) -> u32 {
     assert!(
         post_nr > &0u32 && post_nr <= &get_posts_count(&e.clone()),
@@ -138,6 +192,10 @@ fn get_post_likes(e: &Env, post_nr: &u32) -> u32 {
         .unwrap_or(0u32)
 }
 
+
+/*
+    Descr
+*/
 fn get_like_status(e: &Env, post_nr: &u32, address: Address) -> bool {
     assert!(
         post_nr > &0u32 && post_nr <= &get_posts_count(&e.clone()),
@@ -149,6 +207,10 @@ fn get_like_status(e: &Env, post_nr: &u32, address: Address) -> bool {
         .unwrap_or(false)
 }
 
+
+/*
+    Descr
+*/
 fn get_post_comments_count(e: &Env, post_nr: &u32) -> u32 {
     assert!(
         post_nr > &0u32 && post_nr <= &get_posts_count(&e.clone()),
@@ -160,6 +222,10 @@ fn get_post_comments_count(e: &Env, post_nr: &u32) -> u32 {
         .unwrap_or(0u32)
 }
 
+
+/*
+    Descr
+*/
 fn get_post_comment_by_nr(e: &Env, post_nr: &u32, comment_nr: &u32) -> Comment {
     assert!(
         post_nr > &0u32 && post_nr <= &get_posts_count(&e.clone()),
@@ -178,6 +244,10 @@ fn get_post_comment_by_nr(e: &Env, post_nr: &u32, comment_nr: &u32) -> Comment {
         .expect("Inexistent Comment")
 }
 
+
+/*
+    Descr
+*/
 fn set_follower(e: &Env, address: &Address, user_folowers_count: &u32, follower: &Address) {
     e.storage().instance().set(
         &DataKey::UserFollowersCount(address.clone()),
@@ -193,12 +263,20 @@ fn set_follower(e: &Env, address: &Address, user_folowers_count: &u32, follower:
     );
 }
 
+
+/*
+    Descr
+*/
 fn set_post(e: &Env, post_id: &u32, post: &Post) {
     e.storage()
         .instance()
         .set(&DataKey::Posts(post_id.clone()), post);
 }
 
+
+/*
+    Descr
+*/
 fn set_post_of_user(e: &Env, address: &Address, user_post_count: &u32, post: &Post) {
     e.storage()
         .instance()
@@ -209,6 +287,10 @@ fn set_post_of_user(e: &Env, address: &Address, user_post_count: &u32, post: &Po
     );
 }
 
+
+/*
+    Descr
+*/
 fn set_post_comment(e: &Env, post_nr: &u32, comment_nr: &u32, comment: &Comment) {
     e.storage().instance().set(
         &DataKey::PostCommentByNr(post_nr.clone(), comment_nr.clone()),
@@ -221,6 +303,10 @@ pub struct SocialNetworkContract;
 
 #[contractimpl]
 impl SocialNetworkContract {
+    
+    /*
+        Descr
+    */
     pub fn initialize(e: Env) {
         assert!(
             !e.storage().instance().has(&DataKey::Initialized),
