@@ -8,7 +8,8 @@ use soroban_sdk::{contract, contractimpl, contracttype, Address, Env, String};
 pub(crate) const BUMP_AMOUNT: u32 = 518400;
 
 /*
-    Descr
+    This structure represents represents information about an user, 
+    such as name, biography and avatar CID (IPFS).
 */
 #[derive(Clone, Debug)]
 #[contracttype]
@@ -19,7 +20,8 @@ pub struct UserInfo {
 }
 
 /*
-    Descr
+    This structure represents represents information about a post, 
+    such as its ID, author, creation date, the text and the CID (IPFS) of the image (if uploaded).
 */
 #[derive(Clone, Debug)]
 #[contracttype]
@@ -33,7 +35,8 @@ pub struct Post {
 
 
 /*
-    Descr
+    This structure represents represents information about a post, 
+    such as its ID, author, creation date and the text.
 */
 #[derive(Clone, Debug)]
 #[contracttype]
