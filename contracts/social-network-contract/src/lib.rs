@@ -49,33 +49,43 @@ pub struct Comment {
 
 
 /*
-    Descr
+    Smart contract storage.
+    These entities store all the data of this smart contract.
 */
 #[derive(Clone)]
 #[contracttype]
 pub enum DataKey {
+    // Stores the contract initialization status
     Initialized,
-
+    // Stores information about each user
     Users(Address),
+    // Stores the number of followers for each user
     UserFollowersCount(Address),
+    // Stores
     UserFollowerByNr(Address, u32),
+    // Stores
     UserIsFollowedBy(Address, Address),
-
+    // Stores the count of all posts
     PostsCount,
+    // Stores information about each post
     Posts(u32),
+    // Stores the number of publications for each user
     PostsOfUserCount(Address),
+    // Stores
     PostOfUserByNr(Address, u32),
-
+    // Stores the number of likes for each post
     Likes(u32),
+    // Stores
     LikeStatus(u32, Address),
-
+    // Stores the number of comments for each post
     PostCommentsCount(u32),
+    // Stores
     PostCommentByNr(u32, u32),
 }
 
 
 /*
-    Descr
+    Returns information about a specific user.
 */
 fn get_user_info(e: &Env, address: &Address) -> UserInfo {
     e.storage()
@@ -90,7 +100,7 @@ fn get_user_info(e: &Env, address: &Address) -> UserInfo {
 
 
 /*
-    Descr
+    Returns the number of followers of a specific user.
 */
 fn get_user_followers_count(e: &Env, address: &Address) -> u32 {
     e.storage()
@@ -116,7 +126,7 @@ fn get_user_follower_by_nr(e: &Env, address: &Address, nr: &u32) -> Address {
 
 
 /*
-    Descr
+    Returns the status of a user's subscription to another user (true or false)
 */
 fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
     e.storage()
@@ -127,7 +137,7 @@ fn get_follow_status(e: &Env, address: Address, follower: Address) -> bool {
 
 
 /*
-    Descr
+    Returns the total number of publications
 */
 fn get_posts_count(e: &Env) -> u32 {
     let posts_count: u32 = e
@@ -140,7 +150,7 @@ fn get_posts_count(e: &Env) -> u32 {
 
 
 /*
-    Descr
+    Returns information about a specific post.
 */
 fn get_post(e: &Env, nr: &u32) -> Post {
     assert!(
@@ -156,7 +166,7 @@ fn get_post(e: &Env, nr: &u32) -> Post {
 
 
 /*
-    Descr
+    Returns the number of posts of a specific user.
 */
 fn get_user_post_count(e: &Env, address: &Address) -> u32 {
     e.storage()
@@ -182,7 +192,7 @@ fn get_post_of_user_by_nr(e: &Env, address: &Address, nr: &u32) -> Post {
 
 
 /*
-    Descr
+    Returns the number of likes for a specific post
 */
 fn get_post_likes(e: &Env, post_nr: &u32) -> u32 {
     assert!(
@@ -212,7 +222,7 @@ fn get_like_status(e: &Env, post_nr: &u32, address: Address) -> bool {
 
 
 /*
-    Descr
+    Returns the number of comments for a specific post
 */
 fn get_post_comments_count(e: &Env, post_nr: &u32) -> u32 {
     assert!(
